@@ -42,22 +42,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingPreview() {
     YeahAppTheme {
-        val navController = rememberNavController()
-        Scaffold(
-            bottomBar = {
-                AppNavBar(navController)
-            }
-        ){
-                innerPadding ->
-            NavHost(
-                navController = navController,
-                startDestination = "home",
-                modifier = Modifier.padding(innerPadding)
-            ){
-                composable(Routes.Chats.route) { Home()}
-                composable(Routes.Settings.route) {Settings()}
-                composable(Routes.Profile.route){Profile()}
-            }
-        }
+        AppComponent()
     }
 }

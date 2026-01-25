@@ -25,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun AppNavBar(navController: NavController){
     NavigationBar {
+
         val backStackEntry by navController.currentBackStackEntryAsState() //
         val currentRoute = backStackEntry?.destination?.route //идентифицировать текущий маршрут
 
@@ -66,17 +67,17 @@ object NavBarItems {
         BarItem(
             title = "Главная",
             image = Icons.Filled.Home,
-            route = "home"
+            route = Routes.Chats.route
         ),
         BarItem(
             title = "Профиль",
             image = Icons.Filled.AccountCircle,
-            route = "profile"
+            route = Routes.Profile.route
         ),
         BarItem(
             title = "Настройки",
             image = Icons.Filled.Settings,
-            route = "settings"
+            route = Routes.Settings.route
         )
     )
 }
