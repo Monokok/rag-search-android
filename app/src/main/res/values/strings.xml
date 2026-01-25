@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">YeahApp</string>
+    <string name="sign_in_title">Необходимо авторизоваться</string>
+    <string name="sign_in_login_hint">Укажите логин/email</string>
+    <string name="sign_in_password_hint">Введите пароль</string>
+    <string name="sign_in_button">Войти</string>
+    <string name="logout_title">Выйти из профиля</string>
+    <string name="error_title">Произошла ошибка</string>
+    <string name="login_info_hint">Логин/email от учетной записи для авторизации в приложении</string>
+    <string name="password_info_hint">Пароль от учетной записи для авторизации в приложении</string>
+    <string name="loading_hint">Загрузка...</string>
+
 </resources>
