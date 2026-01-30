@@ -2,18 +2,14 @@ package com.example.yeahapp.ui.components.profile
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -21,14 +17,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.stringResource
 import com.example.yeahapp.R
+import com.example.yeahapp.ui.components.errorComponent.ErrorComponent
+import com.example.yeahapp.ui.components.loadingComponent.LoadingComponent
 
 
 /**
@@ -37,7 +33,7 @@ import com.example.yeahapp.R
  * @param logout - функция, которая будет вызываться при попытке осуществить выход] (logout)
  */
 @Composable
-fun Profile(state: ProfileUIState, login: () -> Unit, logout: () -> Unit): Unit {
+fun Profile(state: ProfileUIState, login: () -> Unit, logout: () -> Unit) {
 //    private val _stateFlow = MutableStateFlow()
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -83,32 +79,10 @@ fun LogoutComponent(state: ProfileUIState.LoggedIn, logout: () -> Unit) {
 }
 
 
-@Composable
-fun LoadingComponent() {
-    CircularProgressIndicator()
-    Spacer(
-        modifier = Modifier.height(
-            16.dp
-        )
-    )
-
-    Text(stringResource(R.string.loading_hint))
-}
 
 
-@Composable
-fun ErrorComponent(
-    message: String = "",
-    modifier: Modifier = Modifier,
-    textColor: Color = MaterialTheme.colorScheme.error
-) {
-    Text(
-        text = if (message.isNotEmpty()) "${stringResource(R.string.error_title)}: $message" else stringResource(R.string.error_title),
-        modifier,
-        color = textColor,
-        textAlign = TextAlign.Center
-    )
-}
+
+
 
 @Composable
 fun SignInComponent(login: () -> Unit) {
@@ -119,7 +93,7 @@ fun SignInComponent(login: () -> Unit) {
     )
     {
         val _login = remember { (mutableStateOf("")) }
-        var _password = remember { (mutableStateOf("")) }
+        val _password = remember { (mutableStateOf("")) }
         Text(stringResource(R.string.sign_in_title))
         TextField(
             placeholder = { Text(stringResource(R.string.sign_in_login_hint)) },
@@ -157,19 +131,19 @@ fun SignInComponent(login: () -> Unit) {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun SignInComponent_Preview() {
-    Profile(ProfileUIState.LoggedOut, { Unit }, { Unit })
+    Profile(ProfileUIState.LoggedOut, {  }, {  })
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun ErrorComponent_Preview() {
-    Profile(ProfileUIState.Error("Нет успеха :("), { Unit }, { Unit })
+    Profile(ProfileUIState.Error("Нет успеха :("), {  }, {  })
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun LoadingComponent_Preview() {
-    Profile(ProfileUIState.Loading, { Unit }, { Unit })
+    Profile(ProfileUIState.Loading, {  }, {  })
 }
 
 @Preview(showBackground = true, showSystemUi = true)
@@ -180,14 +154,14 @@ fun LogoutComponent_Preview() {
             firstName = "Иван",
             lastName = "Иванов",
             login = "ivan@ivan_domain.ru"
-        ), { Unit }, { Unit }
+        ), {  }, {  }
     )
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun Profile_LoggedIn_Preview(): Unit {
+fun Profile_LoggedIn_Preview() {
     Profile(
-        ProfileUIState.LoggedOut, { Unit }, { Unit }
+        ProfileUIState.LoggedOut, {  }, {  }
     )
 }

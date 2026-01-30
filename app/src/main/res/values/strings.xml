@@ -9,5 +9,9 @@
     <string name="login_info_hint">Логин/email от учетной записи для авторизации в приложении</string>
     <string name="password_info_hint">Пароль от учетной записи для авторизации в приложении</string>
     <string name="loading_hint">Загрузка...</string>
+    <string name="no_chats">Нет чатов</string>
+    <string name="chat_title">Чат %s</string>
+    <string name="move_to_chat">Перейти к чату %s</string>
+    <string name="retry_request">Попробовать ещё раз</string>
 
 </resources>
