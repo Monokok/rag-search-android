@@ -28,7 +28,9 @@ sealed class Routes(val route: String) {
     /**
      * Экран внутри чата
      */
-    object Chat: Routes("chat")
+    object Chat: Routes("chat/{chatID}"){
+        fun createRoute(chatID: String) = "chat/$chatID"
+    }
 }
 
 
