@@ -13,5 +13,9 @@
     <string name="chat_title">Чат %s</string>
     <string name="move_to_chat">Перейти к чату %s</string>
     <string name="retry_request">Попробовать ещё раз</string>
+    <string name="back">Назад</string>
+    <string name="enter_a_message">Введите сообщение...</string>
+
+
 
 </resources>

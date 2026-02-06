@@ -1,5 +1,6 @@
 package com.example.yeahapp.ui.navigation
 
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
@@ -10,6 +11,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
@@ -18,26 +20,27 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun AppNavBar(navController: NavController){
-    NavigationBar {
-
+fun AppNavBar(navController: NavController, modifier: Modifier = Modifier) {
+    NavigationBar(modifier = modifier) {
         val backStackEntry by navController.currentBackStackEntryAsState() //
         val currentRoute = backStackEntry?.destination?.route //идентифицировать текущий маршрут
 
         NavBarItems.BarItems.forEach { navItem ->
             NavigationBarItem(
-//                modifier = Modifier.clipToBounds(),
+                modifier = modifier,
                 selected = currentRoute == navItem.route,
                 onClick = {
                     navController.navigate(navItem.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {saveState = true}
+                        popUpTo(navController.graph.findStartDestination().id) { saveState = true }
                         launchSingleTop = true
                         restoreState = true
                     }
                 },
                 icon = {
-                    Icon(imageVector = navItem.image,
-                        contentDescription = navItem.title)
+                    Icon(
+                        imageVector = navItem.image,
+                        contentDescription = navItem.title
+                    )
                 },
                 label = {
                     Text(text = navItem.title)
@@ -52,9 +55,8 @@ fun AppNavBar(navController: NavController){
 fun AppNavBarPreview() {
     val navController = rememberNavController()
 
-    AppNavBar(navController = navController)
+    AppNavBar(navController = navController, modifier = Modifier.systemBarsPadding())
 }
-
 
 
 object NavBarItems {
