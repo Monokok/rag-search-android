@@ -32,23 +32,24 @@ fun AppComponent() {
         composable(Routes.Chats.route) { Chats(navController) }
         composable(Routes.Settings.route) { Settings() }
         composable(Routes.Profile.route) {
-              ProfileScreen(
-                  ProfileViewModel()
-              )
-        composable(
-            Routes.Chat.route,
-            arguments = listOf(
-                navArgument("chatID") {
-                    type = NavType.StringType
-                }
+            ProfileScreen(
+                ProfileViewModel()
             )
+            composable(
+                Routes.Chat.route,
+                arguments = listOf(
+                    navArgument("chatID") {
+                        type = NavType.StringType
+                    }
+                )
 
-        ) { backStackEntry ->
-            val chatID = backStackEntry.arguments?.getString("chatID")
-            if (chatID != null) {
-                ChatScreen(navController, chatID)
-            } else {
-                Text("Chat ID not found")
+            ) { backStackEntry ->
+                val chatID = backStackEntry.arguments?.getString("chatID")
+                if (chatID != null) {
+                    ChatScreen(navController, chatID)
+                } else {
+                    Text("Chat ID not found")
+                }
             }
         }
     }
