@@ -11,8 +11,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.yeahapp.ui.components.home.Chats
-import com.example.yeahapp.ui.components.profile.Profile
-import com.example.yeahapp.ui.components.profile.ProfileUIState
+import com.example.yeahapp.ui.components.profile.ProfileScreen
+import com.example.yeahapp.ui.components.profile.ProfileViewModel
 import com.example.yeahapp.ui.components.settings.Settings
 import com.example.yeahapp.ui.navigation.AppNavBar
 import com.example.yeahapp.ui.navigation.Routes
@@ -49,10 +49,9 @@ fun AppComponent() {
             composable(Routes.Chats.route) { Chats(navController) }
             composable(Routes.Settings.route) { Settings() }
             composable(Routes.Profile.route) {
-                Profile(
-                    state = ProfileUIState.LoggedOut,
-                    login = {  },
-                    logout = {  })
+                ProfileScreen(
+                    ProfileViewModel()
+                )
             }
             composable(Routes.Chat.route) {
                 Text("Do not implemented yet. ChatScreen")

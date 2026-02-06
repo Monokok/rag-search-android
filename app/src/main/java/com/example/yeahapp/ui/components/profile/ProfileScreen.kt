@@ -22,6 +22,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.yeahapp.R
 import com.example.yeahapp.ui.components.errorComponent.ErrorComponent
 import com.example.yeahapp.ui.components.loadingComponent.LoadingComponent
@@ -33,37 +34,51 @@ import com.example.yeahapp.ui.components.loadingComponent.LoadingComponent
  * @param logout - функция, которая будет вызываться при попытке осуществить выход] (logout)
  */
 @Composable
-fun Profile(state: ProfileUIState, login: () -> Unit, logout: () -> Unit) {
-//    private val _stateFlow = MutableStateFlow()
+fun ProfileScreen(viewModel: ProfileViewModel = viewModel()) {
+
+    val state = (viewModel.profileState)
+
+    ProfileComponent(state, { login, password ->
+        viewModel.login(
+            login,
+            password
+        )
+    }, { viewModel.logout() })
+}
+
+@Composable
+fun ProfileComponent(
+    state: ProfileUiState, onLogin: (login: String, password: String) -> Unit, onLogout: () -> Unit
+) {
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
 
-        )
-    {
+        ) {
         when (state) {
-            ProfileUIState.Loading -> {
+            ProfileUiState.Loading -> {
                 LoadingComponent()
             }
 
-            is ProfileUIState.Error -> {
+            is ProfileUiState.Error -> {
                 ErrorComponent(state.message)
             }
 
-            is ProfileUIState.LoggedIn -> {
-                LogoutComponent(state, logout)
+            is ProfileUiState.LoggedIn -> {
+                LogoutComponent(state, onLogout)
             }
 
-            ProfileUIState.LoggedOut -> {
-                SignInComponent(login)
+            ProfileUiState.LoggedOut -> {
+                SignInComponent(onLogin)
             }
         }
     }
 }
 
 @Composable
-fun LogoutComponent(state: ProfileUIState.LoggedIn, logout: () -> Unit) {
+fun LogoutComponent(state: ProfileUiState.LoggedIn, onLogout: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -72,26 +87,20 @@ fun LogoutComponent(state: ProfileUIState.LoggedIn, logout: () -> Unit) {
         Text(state.login)
         Text(state.firstName)
         Text(state.lastName)
-        Button(onClick = logout) {
+        Button(onClick = onLogout) {
             Text(stringResource(R.string.logout_title))
         }
     }
 }
 
 
-
-
-
-
-
 @Composable
-fun SignInComponent(login: () -> Unit) {
+fun SignInComponent(onLogin: (login: String, password: String) -> Unit) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
-    )
-    {
+    ) {
         val _login = remember { (mutableStateOf("")) }
         val _password = remember { (mutableStateOf("")) }
         Text(stringResource(R.string.sign_in_title))
@@ -102,11 +111,10 @@ fun SignInComponent(login: () -> Unit) {
             singleLine = true,
             trailingIcon = {
                 Icon(
-                    Icons.Filled.Person
-                    , contentDescription = stringResource(R.string.login_info_hint)
+                    Icons.Filled.Person,
+                    contentDescription = stringResource(R.string.login_info_hint)
                 )
-            }
-        )
+            })
         TextField(
             placeholder = { Text("Введите пароль") },
             value = _password.value,
@@ -115,53 +123,49 @@ fun SignInComponent(login: () -> Unit) {
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             trailingIcon = {
                 Icon(
-                    Icons.Filled.Lock, contentDescription = stringResource(R.string.password_info_hint)
+                    Icons.Filled.Lock,
+                    contentDescription = stringResource(R.string.password_info_hint)
                 )
             },
             visualTransformation = PasswordVisualTransformation()
         )
-        Button(onClick = login) {
+        Button(onClick = { onLogin(_login.value, _password.value) }) {
             Text(stringResource(R.string.sign_in_button))
         }
     }
 }
 
-//Preview-функции:
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun SignInComponent_Preview() {
-    Profile(ProfileUIState.LoggedOut, {  }, {  })
-}
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun ErrorComponent_Preview() {
-    Profile(ProfileUIState.Error("Нет успеха :("), {  }, {  })
+    ProfileComponent(
+        ProfileUiState.Error("Мок-ошибка для Preview"),
+        { login, password -> println("Preview login click: $login / $password") },
+        {})
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun LoadingComponent_Preview() {
-    Profile(ProfileUIState.Loading, {  }, {  })
+    ProfileComponent(ProfileUiState.Loading, { _, _ -> }, {})
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun LogoutComponent_Preview() {
-    Profile(
-        state = ProfileUIState.LoggedIn(
-            firstName = "Иван",
-            lastName = "Иванов",
-            login = "ivan@ivan_domain.ru"
-        ), {  }, {  }
-    )
+    ProfileComponent(ProfileUiState.LoggedOut, { _, _ -> }, {
+        println("Preview logout click!")
+    })
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun Profile_LoggedIn_Preview() {
-    Profile(
-        ProfileUIState.LoggedOut, {  }, {  }
-    )
+fun Profile_Screen_LoggedIn_Preview() {
+    ProfileComponent(
+        ProfileUiState.LoggedIn(
+            firstName = "Иван", lastName = "Иванов", login = "ivan@yeah.you"
+        ), { login, password -> println("Preview login click: $login / $password") }, {
+            println("Preview logout click!")
+        })
 }

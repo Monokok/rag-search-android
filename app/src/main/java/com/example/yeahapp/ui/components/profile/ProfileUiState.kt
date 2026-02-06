@@ -3,17 +3,17 @@ package com.example.yeahapp.ui.components.profile
 /**
  * UI-состояния экрана профиля в зависимости от статуса авторизации пользователя
  */
-sealed interface ProfileUIState {
-    object Loading : ProfileUIState
-    object LoggedOut : ProfileUIState
+sealed interface ProfileUiState {
+    object Loading : ProfileUiState
+    object LoggedOut : ProfileUiState
 
     data class LoggedIn(
         val firstName: String,
         val lastName: String,
         val login: String,
-    ) : ProfileUIState
+    ) : ProfileUiState
 
     data class Error(
         val message: String
-    ) : ProfileUIState
+    ) : ProfileUiState
 }
